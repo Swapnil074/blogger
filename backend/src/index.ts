@@ -1,10 +1,12 @@
 import { Hono } from 'hono'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
+import { sign } from 'hono/jwt';
 
 const app = new Hono<{
 	Bindings: {
-		DATABASE_URL: string
+		DATABASE_URL: string,
+    JWT_SECRET: string,
 	}
 }>();
 
@@ -22,12 +24,11 @@ try{
       password:body.password
     }
   })
-  
+  const jwt=await sign({id:user.id}, c.env.JWT_SECRET)
+  return c.json({jwt})
 }catch(e){
-
+  return c.status(403)
 }
-
-  return c.text('signup route')
 })
 app.post('/api/v1/user/signin', (c) => {
   return c.text('signin route')
