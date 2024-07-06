@@ -1,19 +1,21 @@
 import { sign,verify } from 'hono/jwt';
 
 
-export function initMiddleware(app:any) {
-    app.use('/api/v1/blog/*', async (c:any, next:any) => {
+export const initMiddleware=async(app:any)=> {
+    app.use("/*", async (c:any, next:any) => {
         const header = c.req.header("authorization") || "";
-        // Bearer token => ["Bearer", "token"];
-        const token = header.split(" ")[1]
-        
-        // @ts-ignore
-        const response = await verify(token, c.env.JWT_SECRET)
-        if (response.id) {
-          next()
-        } else {
-          c.status(403)
-          return c.json({ error: "unauthorized" })
+        const token = header.split(" ")[1];   
+        try {
+          const response = await verify(token, c.env.JWT_SECRET);
+          if (response.id) {
+            c.set("userId", response.id);
+            await next();
+          } else {
+            return c.json({ error: "Unauthorized" }, 403);
+          }
+        } catch (error) {
+          console.error(error);
+          return c.json({ error: "Unauthorized" }, 403);
         }
       })
-}
+    }

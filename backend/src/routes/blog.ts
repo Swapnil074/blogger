@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
+import { initMiddleware } from "../middleware";
 
 export const blogRouter = new Hono<{
     Bindings: {
@@ -13,22 +14,7 @@ export const blogRouter = new Hono<{
     };
   }>();
 
-blogRouter.use("/*", async (c, next) => {
-  const header = c.req.header("authorization") || "";
-  const token = header.split(" ")[1];   
-  try {
-    const response = await verify(token, c.env.JWT_SECRET);
-    if (response.id) {
-      c.set("userId", response.id);
-      await next();
-    } else {
-      return c.json({ error: "Unauthorized" }, 403);
-    }
-  } catch (error) {
-    console.error(error);
-    return c.json({ error: "Unauthorized" }, 403);
-  }
-});
+initMiddleware(blogRouter)
 
 blogRouter.get('/bulk', async (c) => {
   
