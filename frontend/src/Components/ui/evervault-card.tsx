@@ -1,12 +1,12 @@
 /* eslint-disable */
 
 import { useMotionValue } from "framer-motion";
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { useMotionTemplate, motion } from "framer-motion";
 import { cn } from "../../utils/cn";
 
 export const EvervaultCard = ({
-  text,
+  
   className,
 }: {
   text?: string;

@@ -15,7 +15,7 @@ const app = new Hono<{
 app.use(
   '*',
   cors({
-    origin: 'http://localhost:5173', // Your frontend URL
+    origin: 'https://cms-blogger.netlify.app', // Your frontend URL
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
   })
