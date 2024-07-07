@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+/* eslint-disable */
+
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Login from './Pages/Login'
 import Blog from './Pages/Blog'
+import { Login } from './Pages/Login/Login'
+import { Blogs } from './Pages/Blogs'
+import { Publish } from './Pages/Publish'
 
 function App() {
 
@@ -12,9 +13,15 @@ function App() {
     <>
      <BrowserRouter>
      <Routes>
-      <Route path='/' element={<Login/>}/>
-      <Route path='/blog/:id' element={<Blog/>}/>
-     </Routes>
+    
+      <Route path='/' element={
+        <Login/>
+        }/>
+      
+      <Route path="/blog/:id" element={<Blog/>} />
+          <Route path="/blogs" element={<Blogs/>} />
+          <Route path="/publish" element={<Publish/>} />    
+      </Routes>
      </BrowserRouter>
     </>
   )
